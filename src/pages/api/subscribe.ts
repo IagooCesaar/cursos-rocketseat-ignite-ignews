@@ -7,6 +7,9 @@ import { fauna } from '../../services/fauna';
 type User = {
   ref: {
     id: string;
+  },
+  data: { 
+    stripe_customer_id: string;
   }
 }
 
@@ -22,25 +25,28 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
         )
       )
     );
-    
-    const stripeCostumer = await stripe.customers.create({
-      email: session.user.email,
-      // metadata: 
-    })
 
-    await fauna.query(
-      q.Update(
-        q.Ref(q.Collection('users'), user.ref.id),
-        {
-          data: {
-            stripe_customer_id: stripeCostumer.id
+    let customerId = user.data.stripe_customer_id;
+    if (!customerId) {
+      const stripeCostumer = await stripe.customers.create({
+        email: session.user.email,
+        // metadata: 
+      })  
+      await fauna.query(
+        q.Update(
+          q.Ref(q.Collection('users'), user.ref.id),
+          {
+            data: {
+              stripe_customer_id: stripeCostumer.id
+            }
           }
-        }
+        )
       )
-    )
+      customerId = stripeCostumer.id;
+    }
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
-      customer: stripeCostumer.id,
+      customer: customerId,
       payment_method_types: ['card'],
       billing_address_collection: 'required',
       line_items: [
