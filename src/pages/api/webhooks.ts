@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { session } from 'next-auth/client';
 import { Readable } from 'stream'
 import Stripe from 'stripe';
 import { stripe } from '../../services/stripe';
+import { saveSubscription } from './_lib/manageSubscription';
 
 async function buffer(readable: Readable) {
   const chunks = [];
@@ -40,7 +42,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         switch(type) {
           case 'checkout.session.completed':
-            
+            const checkoutSession = event.data.object as Stripe.Checkout.Session;
+            await saveSubscription(
+              checkoutSession.subscription.toString(),
+              checkoutSession.customer.toString()
+            );
+
             break;
           default:
             throw new Error('Unhandled event')
