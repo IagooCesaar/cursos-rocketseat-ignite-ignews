@@ -43,7 +43,10 @@ export default NextAuth({
           activeSubscription: userActiveSubscription
         }  
       } catch {
-        return session
+        return {
+          ...session,
+          activeSubscription: null
+        }
       }
     },
     async signIn(user, account, profile) {
