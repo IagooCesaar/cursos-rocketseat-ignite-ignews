@@ -6,8 +6,8 @@ import { getPrismicClient } from '../../services/prismic';
 
 import styles from './post.module.scss';
 
-interface IPostProps { 
-  post: { 
+interface IPostProps {
+  post: {
     slug: string;
     title: string;
     content: string;
@@ -29,7 +29,7 @@ export default function Post({ post }: IPostProps) {
             className={styles.postContent}
             dangerouslySetInnerHTML={{
               __html: post.content
-            }} 
+            }}
           />
         </article>
       </main>
@@ -41,8 +41,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
   const session = await getSession({ req });
   const { slug } = params;
 
-  // if (!session) {    
-  // }
+  if (!session.activeSubscription) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
 
   const prismic = getPrismicClient(req);
   const response = await prismic.getByUID('publication', String(slug), {})
@@ -58,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
     })
   }
 
-  return { 
+  return {
     props: { post }
   }
 }
