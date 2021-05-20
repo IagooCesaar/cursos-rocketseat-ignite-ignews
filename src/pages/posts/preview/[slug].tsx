@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next'
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
+import Link from 'next/link';
 import { RichText } from 'prismic-dom';
 
 import { getPrismicClient } from '../../../services/prismic';
@@ -32,6 +33,12 @@ export default function PostPreview({ post }: IPostPreviewProps) {
               __html: post.content
             }}
           />
+          <div className={styles.continueReading}>
+            Wanna continue reading?
+            <Link href="/">
+              <a>Subscribe now 🤗</a>
+            </Link>
+          </div>
         </article>
       </main>
     </>
