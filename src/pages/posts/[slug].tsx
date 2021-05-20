@@ -1,10 +1,34 @@
 import { GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/client';
+import Head from 'next/head';
+import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../../services/prismic';
 
-export default function Post() {
+interface IPostProps { 
+  post: { 
+    slug: string;
+    title: string;
+    content: string;
+    updatedAt: string;
+  };
+}
+
+export default function Post({ post }: IPostProps) {
   return (
-    <h1>Página do post</h1>
+    <>
+      <Head>
+        <title>{post.title} | Ignews</title>
+      </Head>
+      <main>
+        <article>
+          <h1>{post.title}</h1>
+          <time>{post.updatedAt}</time>
+          <div dangerouslySetInnerHTML={{
+            __html: post.content
+          }} />
+        </article>
+      </main>
+    </>
   )
 }
 
@@ -30,6 +54,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
   }
 
   return { 
-    props: { }
+    props: { post }
   }
 }
