@@ -50,12 +50,20 @@ export const getStaticProps: GetStaticProps = async () => {
     fetch: ['publication.title', 'publication.content'],
     pageSize: 100,
   })
-
-  console.log('Prismic response =>', JSON.stringify(response, null, 2))
+  const posts = response.results.map(post => {
+    return {
+      slug: post.uid,
+      title: RichText.asText(post.data.title),
+      excerpt: post.data.content.find(content => content.type === 'paragraph')?.text ?? '',
+      updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
+  })
 
   return {
-    props: {
-
-    }
+    props: { posts }
   }
 }
