@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps = async () => {
     pageSize: 100,
   })
 
-  console.log('Prismic response =>', response)
+  console.log('Prismic response =>', JSON.stringify(response, null, 2))
 
   return {
     props: {
