@@ -1,13 +1,25 @@
 import Head from 'next/head'
 import Prismic from '@prismicio/client'
+import { RichText } from 'prismic-dom'
 
 import { GetStaticProps } from 'next'
 
 import { getPrismicClient } from '../../services/prismic'
 
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
-export default function Posts() {
+type IPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  updatedAt: string;
+}
+
+interface IPostsProps {
+  posts: IPost[];
+}
+
+export default function Posts({ posts }: IPostsProps) {
   return (
     <>
       <Head>
@@ -15,26 +27,13 @@ export default function Posts() {
       </Head>
       <main className={styles.container}>
         <div className={styles.posts}>
-          <a href="#">
-            <time>12 de março de 2021</time>
-            <strong>Creating a Monrepo with Lerna & Yarn Workspaces</strong>
-            <p>In this guide, you will learn how to create a Monorepo to manage multiple packages with a </p>
-          </a>
-          <a href="#">
-            <time>12 de março de 2021</time>
-            <strong>Creating a Monrepo with Lerna & Yarn Workspaces</strong>
-            <p>In this guide, you will learn how to create a Monorepo to manage multiple packages with a </p>
-          </a>
-          <a href="#">
-            <time>12 de março de 2021</time>
-            <strong>Creating a Monrepo with Lerna & Yarn Workspaces</strong>
-            <p>In this guide, you will learn how to create a Monorepo to manage multiple packages with a </p>
-          </a>
-          <a href="#">
-            <time>12 de março de 2021</time>
-            <strong>Creating a Monrepo with Lerna & Yarn Workspaces</strong>
-            <p>In this guide, you will learn how to create a Monorepo to manage multiple packages with a </p>
-          </a>
+          {posts.map(post => (
+            <a key={post.slug} href="#">
+              <time>{post.updatedAt}</time>
+              <strong>{post.title}</strong>
+              <p>{post.excerpt}</p>
+            </a>
+          ))}
         </div>
       </main>
     </>
