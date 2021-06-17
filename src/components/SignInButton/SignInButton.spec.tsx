@@ -18,4 +18,11 @@ describe('SignInButton component', () => {
     )
     expect(screen.getByText('Sign in with Github')).toBeInTheDocument();
   })
+
+  it('renders correctly when user is authenticated', () => {
+    render(
+      <SignInButton />
+    )
+    expect(screen.getByText('Sign in with Github')).toBeInTheDocument();
+  })
 });
