@@ -16,7 +16,11 @@ jest.mock('next-auth/client', () => {
 
 jest.mock('next/router', () => {
   return {
-    push: jest.fn(),
+    useRouter() {
+      return {
+        push: jest.fn(),
+      }
+    },
   }
 });
 
