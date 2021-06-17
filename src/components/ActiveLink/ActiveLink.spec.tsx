@@ -30,7 +30,14 @@ test('ActiveLink render correctly activeClassName', () => {
       <a>Home</a>
     </ActiveLink>
   )
-
-  // debug(); // debug irá gerar um console.log da DOM virtual do jsdom
   expect(getByText('Home')).toHaveClass('active')
+})
+
+test('ActiveLink not render activeClassName', () => {
+  const { debug, getByText } = render(
+    <ActiveLink href="/other-path" activeClassName="active">
+      <a>Home</a>
+    </ActiveLink>
+  )
+  expect(getByText('Home')).not.toHaveClass('active')
 })
