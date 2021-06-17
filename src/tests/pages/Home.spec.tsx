@@ -11,6 +11,6 @@ describe("Home page", () => {
       }}
     />)
 
-    expect(screen.getByText('R$10,00')).toBeInTheDocument();
+    expect(screen.getByText(/R\$10,00/i)).toBeInTheDocument();
   })
 })
