@@ -20,5 +20,5 @@ test('ActiveLink render correctly', () => {
     </ActiveLink>
   )
 
-  debug();
+  debug(); // debug irá gerar um console.log da DOM virtual do jsdom
 })
