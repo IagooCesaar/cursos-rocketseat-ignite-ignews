@@ -4,6 +4,6 @@ import Home from '../../pages';
 describe("Home page", () => {
 
   it("Render correctly", () => {
-    
+
   })
 })
