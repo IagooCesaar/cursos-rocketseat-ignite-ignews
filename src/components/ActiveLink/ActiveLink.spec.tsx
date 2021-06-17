@@ -3,6 +3,16 @@ import { render } from '@testing-library/react';
 
 import { ActiveLink } from '.';
 
+jest.mock('next/router', () => {
+  return {
+    useRouter() {
+      return {
+        asPath: '/',
+      }
+    }
+  }
+})
+
 test('ActiveLink render correctly', () => {
   const { debug } = render(
     <ActiveLink href="/" activeClassName="active">
