@@ -1,6 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import Home from '../../pages';
 
+jest.mock('next/router')
+jest.mock('next-auth/client', () => {
+  return {
+    useSession: () => [null, false],
+  }
+})
+
 describe("Home page", () => {
 
   it("Render correctly", () => {
@@ -10,6 +17,8 @@ describe("Home page", () => {
         amount: 'R$10,00',
       }}
     />)
+
+    expect(screen.getByText('for R$10,00 month')).toBeInTheDocument();
 
     expect(screen.getByText(/R\$10,00/i)).toBeInTheDocument();
   })
