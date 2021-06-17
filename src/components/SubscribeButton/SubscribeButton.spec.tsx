@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 // import { mocked } from 'ts-jest/utils';
 // import { useSession } from 'next-auth/client';
 import { SubscribeButton } from '.';
@@ -20,5 +20,14 @@ describe('SubscribeButton component', () => {
       <SubscribeButton />
     )
     expect(screen.getByText('Subscribe now')).toBeInTheDocument();
+  })
+
+  it('redirects user to sign in when not authenticated', () => {
+    render(
+      <SubscribeButton />
+    )
+    const subscribeButton = screen.getByText('Subscribe now');
+    fireEvent.click(subscribeButton);
+
   })
 });
