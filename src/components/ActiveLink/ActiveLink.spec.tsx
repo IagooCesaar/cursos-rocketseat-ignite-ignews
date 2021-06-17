@@ -14,7 +14,7 @@ jest.mock('next/router', () => {
 })
 
 test('ActiveLink render correctly', () => {
-  const { getByText } = render(
+  const { debug, getByText } = render(
     <ActiveLink href="/" activeClassName="active">
       <a>Home</a>
     </ActiveLink>
@@ -22,4 +22,15 @@ test('ActiveLink render correctly', () => {
 
   // debug(); // debug irá gerar um console.log da DOM virtual do jsdom
   expect(getByText('Home')).toBeInTheDocument();
+})
+
+test('ActiveLink render correctly activeClassName', () => {
+  const { debug, getByText } = render(
+    <ActiveLink href="/" activeClassName="active">
+      <a>Home</a>
+    </ActiveLink>
+  )
+
+  // debug(); // debug irá gerar um console.log da DOM virtual do jsdom
+  expect(getByText('Home')).toHaveClass('active')
 })
