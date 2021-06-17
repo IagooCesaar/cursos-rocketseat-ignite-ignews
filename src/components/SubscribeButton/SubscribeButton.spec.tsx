@@ -6,18 +6,14 @@ import { useRouter } from 'next/router'
 
 import { SubscribeButton } from '.';
 
-jest.mock('next-auth/client', () => {
-  return {
-    useSession() {
-      return [null, false]
-    }
-  }
-})
-
+jest.mock('next-auth/client');
 jest.mock('next/router');
 
 describe('SubscribeButton component', () => {
   it('renders correctly', () => {
+    const useSessionMocked = mocked(useSession);
+    useSessionMocked.mockReturnValueOnce([null, false]);
+
     render(
       <SubscribeButton />
     )
@@ -26,6 +22,9 @@ describe('SubscribeButton component', () => {
 
   it('redirects user to sign in when not authenticated', () => {
     const signInMocked = mocked(signIn);
+
+    const useSessionMocked = mocked(useSession);
+    useSessionMocked.mockReturnValueOnce([null, false]);
 
     render(
       <SubscribeButton />
