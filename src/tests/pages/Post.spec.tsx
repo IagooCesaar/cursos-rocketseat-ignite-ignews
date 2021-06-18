@@ -26,39 +26,22 @@ describe("Post page", () => {
     expect(screen.getByText('Post content')).toBeInTheDocument();
   })
 
-  // it('loads initial data', async () => {
-  //   const getPrismicClientMocked = mocked(getPrismicClient);
+  it('redirects user if no subscription found', async () => {
+    const response = await getServerSideProps({
+      req: {
+        cookies: {},
+      },
+      params: {
+        slug: 'my-new-post',
+      }
+    } as any);
 
-  //   getPrismicClientMocked.mockReturnValueOnce({
-  //     query: jest.fn().mockResolvedValueOnce({
-  //       results: [
-  //         {
-  //           uid: 'my-new-post',
-  //           data: {
-  //             title: [
-  //               { type: 'heading', text: 'My New Post' },
-  //             ],
-  //             content: [
-  //               { type: 'paragraph', text: 'Post excerpt' }
-  //             ],
-  //           },
-  //           last_publication_date: '04-01-2021',
-  //         }
-  //       ]
-  //     }),
-  //   } as any);
-  //   const response = await getStaticProps({});
-  //   expect(response).toEqual(
-  //     expect.objectContaining({
-  //       props: {
-  //         posts: [{
-  //           slug: 'my-new-post',
-  //           title: 'My New Post',
-  //           excerpt: 'Post excerpt',
-  //           updatedAt: '01 de abril de 2021'
-  //         }]
-  //       },
-  //     })
-  //   )
-  // })
+    expect(response).toEqual(
+      expect.objectContaining({
+        redirect: {
+          destination: '/',
+        }
+      })
+    )
+  })
 })
