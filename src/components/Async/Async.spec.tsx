@@ -8,7 +8,11 @@ describe('Exemplo para componentes com comportamentos assíncronos', () => {
 
     //Ajuste para esperar algo acontecer em tela
     await waitFor(() => {
-      return expect(screen.getByText('Botão')).toBeInTheDocument()
+      return expect(screen.getByText('Botão 1')).toBeInTheDocument()
     }, { timeout: 3000 })
-  })
+
+    await waitFor(() => {
+      return expect(screen.getByText('Botão 2')).not.toBeInTheDocument()
+    }, { timeout: 3000 })
+  }, 10000)
 })
