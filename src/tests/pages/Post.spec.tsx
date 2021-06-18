@@ -4,8 +4,9 @@ import { getPrismicClient } from '../../services/prismic';
 
 import Post, { getServerSideProps } from '../../pages/posts/[slug]';
 import React from 'react';
+import { getSession } from 'next-auth/client';
 
-jest.mock('../../services/prismic');
+jest.mock('next-auth/client');
 
 const post = {
   slug: 'my-new-post',
@@ -27,10 +28,10 @@ describe("Post page", () => {
   })
 
   it('redirects user if no subscription found', async () => {
+    const getSessionMocked = mocked(getSession);
+    getSessionMocked.mockResolvedValueOnce(null);
+
     const response = await getServerSideProps({
-      req: {
-        cookies: {},
-      },
       params: {
         slug: 'my-new-post',
       }
