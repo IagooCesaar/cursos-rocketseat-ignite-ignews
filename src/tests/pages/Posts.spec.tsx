@@ -4,7 +4,6 @@ import { getPrismicClient } from '../../services/prismic';
 
 import Posts, { getStaticProps } from '../../pages/posts';
 import React from 'react';
-import { isJsxExpression } from 'typescript';
 
 jest.mock('../../services/prismic');
 
