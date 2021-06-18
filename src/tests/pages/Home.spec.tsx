@@ -32,6 +32,6 @@ describe("Home page", () => {
     retrieveStripePriveMocked.mockResolvedValueOnce({
       id: 'fake-id',
       unit_amount: 1000,
-    })
+    } as any)
   })
 })
