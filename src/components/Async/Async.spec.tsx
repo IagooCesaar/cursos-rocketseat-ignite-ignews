@@ -7,6 +7,8 @@ describe('Exemplo para componentes com comportamentos assíncronos', () => {
     expect(screen.getByText('Hello World')).toBeInTheDocument();
 
     //Ajuste para esperar algo acontecer em tela
-    expect(await screen.findByText('Botão')).toBeInTheDocument();
+    expect(await screen.findByText('Botão', {}, {
+      timeout: 3000
+    })).toBeInTheDocument();
   })
 })
