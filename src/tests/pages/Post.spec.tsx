@@ -39,9 +39,9 @@ describe("Post page", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        redirect: {
+        redirect: expect.objectContaining({
           destination: '/',
-        }
+        })
       })
     )
   })
