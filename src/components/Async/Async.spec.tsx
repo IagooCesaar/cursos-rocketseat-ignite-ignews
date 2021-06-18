@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Async } from '.';
 
 describe('Exemplo para componentes com comportamentos assíncronos', () => {
@@ -7,8 +7,8 @@ describe('Exemplo para componentes com comportamentos assíncronos', () => {
     expect(screen.getByText('Hello World')).toBeInTheDocument();
 
     //Ajuste para esperar algo acontecer em tela
-    expect(await screen.findByText('Botão', {}, {
-      timeout: 3000
-    })).toBeInTheDocument();
+    await waitFor(() => {
+      return expect(screen.getByText('Botão')).toBeInTheDocument()
+    }, { timeout: 3000 })
   })
 })
