@@ -28,6 +28,6 @@ describe("Home page", () => {
   })
 
   it('loads initial data', () => {
-    const stripeMocked = mocked(stripe);
+    const retrieveStripePriveMocked = mocked(stripe.prices.retrieve);
   })
 })
