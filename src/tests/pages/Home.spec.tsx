@@ -33,8 +33,16 @@ describe("Home page", () => {
       id: 'fake-id',
       unit_amount: 1000,
     } as any);
-
+    // console.log
+    // {
+    //   props: { product: { priceId: 'fake-id', amount: '$10.00' } },
+    //   revalidate: 86400
+    // }
     const response = await getStaticProps({});
-    console.log(response);
+    expect(response).toEqual(
+      expect.objectContaining({
+        props: { product: { priceId: 'fake-id', amount: '$10,00' } },
+      })
+    )
   })
 })
