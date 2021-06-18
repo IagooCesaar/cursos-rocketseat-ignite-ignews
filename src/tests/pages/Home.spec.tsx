@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { mocked } from 'ts-jest/utils';
 import { stripe } from '../../services/stripe';
 
-import Home from '../../pages';
+import Home, { getStaticProps } from '../../pages';
 
 jest.mock('next/router')
 jest.mock('next-auth/client', () => {
@@ -27,11 +27,14 @@ describe("Home page", () => {
     expect(screen.getByText(/R\$10,00/i)).toBeInTheDocument();
   })
 
-  it('loads initial data', () => {
+  it('loads initial data', async () => {
     const retrieveStripePriveMocked = mocked(stripe.prices.retrieve);
     retrieveStripePriveMocked.mockResolvedValueOnce({
       id: 'fake-id',
       unit_amount: 1000,
-    } as any)
+    } as any);
+
+    const response = await getStaticProps({});
+    console.log(response);
   })
 })
