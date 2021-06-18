@@ -5,8 +5,10 @@ import { mocked } from 'ts-jest/utils';
 
 import PostPreview, { getStaticProps } from '../../pages/posts/preview/[slug]';
 import { getPrismicClient } from '../../services/prismic';
+import { useRouter } from 'next/router';
 
 jest.mock('next-auth/client');
+jest.mock('next/router');
 jest.mock('../../services/prismic');
 
 const post = {
@@ -32,24 +34,23 @@ describe("PostPreview page", () => {
     expect(screen.getByText('Wanna continue reading?')).toBeInTheDocument();
   })
 
-  // it('redirects user if no subscription found', async () => {
-  //   const getSessionMocked = mocked(getSession);
-  //   getSessionMocked.mockResolvedValueOnce(null);
+  it('redirects user to full post when user is subscribed', async () => {
+    const useSessionMocked = mocked(useSession);
+    useSessionMocked.mockReturnValueOnce([
+      { activeSubscription: 'fake-subscription' },
+      false
+    ] as any);
 
-  //   const response = await getServerSideProps({
-  //     params: {
-  //       slug: 'my-new-post',
-  //     }
-  //   } as any);
+    const useRouterMocked = mocked(useRouter);
+    const pushMock = jest.fn();
+    useRouterMocked.mockReturnValueOnce({
+      push: pushMock,
+    } as any)
 
-  //   expect(response).toEqual(
-  //     expect.objectContaining({
-  //       redirect: expect.objectContaining({
-  //         destination: '/',
-  //       })
-  //     })
-  //   )
-  // })
+    render(<PostPreview post={post} />)
+
+    expect(pushMock).toHaveBeenCalledWith('/posts/my-new-post');
+  })
 
   // it('load initial data', async () => {
   //   const getSessionMocked = mocked(getSession);
