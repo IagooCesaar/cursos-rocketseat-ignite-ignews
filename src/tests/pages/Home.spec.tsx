@@ -29,5 +29,9 @@ describe("Home page", () => {
 
   it('loads initial data', () => {
     const retrieveStripePriveMocked = mocked(stripe.prices.retrieve);
+    retrieveStripePriveMocked.mockResolvedValueOnce({
+      id: 'fake-id',
+      unit_amount: 1000,
+    })
   })
 })
