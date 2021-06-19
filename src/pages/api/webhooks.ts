@@ -28,6 +28,8 @@ const relevantEvents = new Set([
 ])
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // console.log('webhooks route')
+  
   if (req.method === 'POST') {
     const buf = await buffer(req);
     const secret = req.headers['stripe-signature'];
@@ -42,6 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { type } = event;
     if (relevantEvents.has(type)) {
       try {
+        // console.log('stripe event type', type)
         switch(type) {
           case 'customer.subscription.updated':
           case 'customer.subscription.deleted':
@@ -67,10 +70,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           default:
             throw new Error('Unhandled event')
         } 
-      } catch (error) {        
+      } catch (error) {       
+        if (error instanceof Error)  {
+          return res.json({ 
+            error: 'Webhook handler failed',
+            message: error.message
+          }) 
+        }
         return res.json({ 
-          error: 'Webhook handler failed',
-          message: error.message,
+          error: 'Webhook handler failed'
         })
       }
       
