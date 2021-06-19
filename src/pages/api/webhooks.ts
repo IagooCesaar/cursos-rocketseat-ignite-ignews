@@ -71,15 +71,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             throw new Error('Unhandled event')
         } 
       } catch (error) {       
+        let data: {error: string; message?: string} = null;
         if (error instanceof Error)  {
-          return res.json({ 
-            error: 'Webhook handler failed',
-            message: error.message
-          }) 
+          data.error = 'Webhook handler failed';
+          data.message = error.message;
+          
+        } else {       
+          data.error = 'Webhook handler failed';
         }
-        return res.json({ 
-          error: 'Webhook handler failed'
-        })
+        res.status(500).json(data)
+        return data;
       }
       
       console.log('Evento recebido', event)
